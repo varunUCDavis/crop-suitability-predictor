@@ -1,0 +1,11 @@
+geopandas
+joblib
+numpy
+pandas
+planetary_computer
+pystac_client
+rasterio
+requests
+shapely
+tqdm
+

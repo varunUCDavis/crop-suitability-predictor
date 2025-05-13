@@ -1,0 +1,61 @@
+[project]
+name = "crop-suitability-predictor"
+version = "0.1.0"
+description = "Crop suitability prediction based on soil characteristics"
+authors = [
+    {name = "varunUCDavis",email = "vwadhwa@ucdavis.edu"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+
+[tool.poetry]
+name = "crop-suitability-predictor"
+version = "0.1.0"
+description = "Crop suitability prediction based on soil characteristics"
+authors = ["Varun Wadhwa, <vwadhwa@ucdavis.edu>"]
+packages = [
+    { include = "crop_suitability_predictor", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"  # or your version
+pandas = "^1.4"
+numpy = "^1.22"
+scikit-learn = "^1.0"
+sqlalchemy = "^1.4"  # For database connections
+geopandas = "^1.0.1"
+joblib = "^1.5.0"
+planetary-computer = "^1.0.0"
+pystac-client = "^0.8.6"
+rasterio = "^1.4.3"
+requests = "^2.32.3"
+shapely = "^2.1.0"
+tqdm = "^4.67.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1"
+flake8 = "^4.0"
+black = "^22.0"
+isort = "^5.10"
+
+[tool.black]
+line-length = 88  
+target-version = ["py310"]  
+skip-string-normalization = false
+include = '\.pyi?$'  
+
+[tool.isort]
+profile = "black"  
+line_length = 88  
+multi_line_output = 3  
+include_trailing_comma = true
+
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0,<2.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+fetch-raw-data = "crop_suitability_predictor.scripts.data.data_injestion.fetch_raw_data:main"
