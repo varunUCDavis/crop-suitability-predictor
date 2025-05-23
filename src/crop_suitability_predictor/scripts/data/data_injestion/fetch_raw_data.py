@@ -1,5 +1,5 @@
 import os 
-from crop_suitability_predictor.modules.data.data_injestion_utils import fetch_CA_shape_file, fetch_cdl_rasters, fetch_ndvi_tiles, fetch_soil_rasters
+from crop_suitability_predictor.modules.data.data_injestion_utils import fetch_CA_shape_file, fetch_cdl_rasters, fetch_crop_reports, fetch_ndvi_tiles, fetch_soil_rasters, fetch_usda_historical_max
 
 
 
@@ -12,7 +12,8 @@ def fetch_raw_data():
     fetch_CA_shape_file()
     fetch_ndvi_tiles()
     fetch_soil_rasters()  
-    
+    fetch_crop_reports()
+    fetch_usda_historical_max()
 
 def main() -> None:
     fetch_raw_data()
