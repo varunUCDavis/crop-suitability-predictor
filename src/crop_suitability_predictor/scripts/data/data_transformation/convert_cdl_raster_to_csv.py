@@ -6,7 +6,7 @@ from shapely.geometry import Point
 import geopandas as gpd
 from tqdm import tqdm
 from joblib import Parallel, delayed
-from progress_utils import tqdm_joblib
+from crop_suitability_predictor.modules.data.common_data_utils import tqdm_joblib
 
 #TEST TO SEE IF FILTERING WORKS, OLD FILTERING CODE IN "filter_points_by_cropcode.py"
 
@@ -15,24 +15,25 @@ FILTER_POINTS = True  # or bool(os.getenv("FILTER_POINTS", "False"))
 
 def convert_raster_to_csv(raster_path: str):
     counties = gpd.read_file("../supporting_files/CA_Counties.shp").to_crs(epsg=32610)
-
+    _ = counties.sindex
     with rasterio.open(raster_path) as src:
+        breakpoint()
         band1 = src.read(1)
         transform = src.transform
         rows, cols = np.where(band1 != src.nodata)
         lon, lat = rasterio.transform.xy(transform, rows, cols)
         geometry = [Point(lon, lat) for lon, lat in zip(lon, lat)]
         values = band1[rows, cols]
-
+        
         df = pd.DataFrame({"crop_code": values})
         gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:32610")
 
-        def process_chunk(chunk):
+        def process_chunk(chunk, counties):
             return gpd.sjoin(chunk, counties, how="left", predicate="within")
 
         chunks = np.array_split(gdf, 100)
         with tqdm_joblib(tqdm(desc="Processing", total=100)):
-            results = Parallel(n_jobs=6)(delayed(process_chunk)(chunk) for chunk in chunks)
+            results = Parallel(n_jobs=6)(delayed(process_chunk)(chunk,counties) for chunk in chunks)
 
         result = pd.concat(results)
         result = result[['geometry', 'crop_code', 'NAME']].rename(columns={'NAME': 'county_name'})
