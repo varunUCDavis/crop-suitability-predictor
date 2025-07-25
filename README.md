@@ -22,19 +22,16 @@ The system integrates the following key data sources:
 
 ### 1. Initial Preprocessing
 
-- County-level crop data is cleaned and matched to cropland raster points.
+- Cropland raster points are sampled to reduce resolution to 250m, for faster processing
+- County-level crop data is cleaned and matched to sampled cropland raster points.
+- Historical max yields are extracted from County reports and joined to each point
 - NDVI values are computed for each crop point over the relevant growing season.
-- Soil properties and historical max yields are extracted and joined to each point.
+- Soil properties are extracted, with PCA applied to the numerical features, and the resulting components are joined to each crop point.
 
 ### 2. Data Distribution
 
-- **NDVI-Weighted Yield Allocation**: For each point, a fraction of the total county production is allocated using NDVI as a proxy for productivity.
-- **Soil Features**: Each point is enriched with soil characteristics, such as:
-  - pH
-  - Cation exchange capacity
-  - Organic matter
-  - Calcium carbonate content
-  - Texture
+- **NDVI-Weighted Production Allocation**: For each point, a fraction of the total county production is allocated using NDVI as a proxy for productivity.
+- **Yield Estimation**: Yield estimation is done at each point, based on the assigned production and point resolution
 
 ### 3. Suitability Calculation
 
