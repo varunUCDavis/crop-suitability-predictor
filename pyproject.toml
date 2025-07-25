@@ -71,3 +71,5 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 fetch-raw-data = "crop_suitability_predictor.scripts.data.data_injestion.fetch_raw_data:main"
+data-transformation = "crop_suitability_predictor.scripts.data.data_transformation.data_transformation:main"
+train-model = "crop_suitability_predictor.scripts.models.training:main"
